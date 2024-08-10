@@ -13,7 +13,7 @@
   padding: 0px 10px 0px 10px;
   justify-content: right;
   position: fixed;
-  width: 99%;
+  width: 100%;
   margin-right: 30px;
 }
 .finance-container {
@@ -28,8 +28,10 @@
 .form-field input,
 select {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   margin-bottom: 10px;
+  font-size: 18px;
+
 }
 .form-field label {
   padding-bottom: 10px;
@@ -51,4 +53,27 @@ button {
 }
 button:hover {
   background-color: #343434
+}
+.table{
+  border-collapse: collapse;
+  width: 100%;
+  
+  
+  
+}
+.table th,td{
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  text-align: left;
+}
+.table th{
+  background-color:cornflowerblue;
+  color: white;
+  font-size: 18px;
+}
+.table tbody tr:nth-child(odd){
+  background-color: #f2f2f2;
+}
+.table tbody tr:hover {
+  background-color: #e8f4f8;
 }

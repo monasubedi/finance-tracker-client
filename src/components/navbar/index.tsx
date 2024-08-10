@@ -8,7 +8,9 @@ const Navbar = () => {
         Dashboard
       </Link>
       <SignedIn>
-        <UserButton />
+        <div style={{paddingRight:'20px'}}>
+          <UserButton />
+        </div>
       </SignedIn>
     </div>
   );
