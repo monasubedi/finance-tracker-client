@@ -20,6 +20,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(initialValue);
   const onBlur = () => {
+    updateRecord(row.index, column.id, value);
     setEditing(false);
   };
   return (
@@ -38,29 +39,62 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 const FinanceRecordList = () => {
-  const { records: data } = useFinanceContext();
+  const { records: data, deleteRecord, updateRecord } = useFinanceContext();
+
+  const updateCellRecord = (
+    rowIndex: number,
+    columnId: string,
+    value: string
+  ) => {
+    const id = data[rowIndex]?._id;
+    updateRecord(id ?? "", { ...data[rowIndex], [columnId]: value });
+  };
 
   const columns: Array<Column<FinanceRecord>> = useMemo(
     () => [
       {
         Header: "Amount",
         accessor: "amount",
-        Cell: (props: any) => <EditableCell editable={true} {...props} />,
+        Cell: (props: any) => (
+          <EditableCell
+            editable={true}
+            {...props}
+            updateRecord={updateCellRecord}
+          />
+        ),
       },
       {
         Header: "Description",
         accessor: "description",
-        Cell: (props: any) => <EditableCell editable={true} {...props} />,
+        Cell: (props: any) => (
+          <EditableCell
+            editable={true}
+            {...props}
+            updateRecord={updateCellRecord}
+          />
+        ),
       },
       {
         Header: "Category",
         accessor: "category",
-        Cell: (props: any) => <EditableCell editable={true} {...props} />,
+        Cell: (props: any) => (
+          <EditableCell
+            editable={true}
+            {...props}
+            updateRecord={updateCellRecord}
+          />
+        ),
       },
       {
         Header: "Payment Method",
         accessor: "paymentMethod",
-        Cell: (props: any) => <EditableCell editable={true} {...props} />,
+        Cell: (props: any) => (
+          <EditableCell
+            editable={true}
+            {...props}
+            updateRecord={updateCellRecord}
+          />
+        ),
       },
       {
         Header: "Date",
@@ -68,9 +102,13 @@ const FinanceRecordList = () => {
         Cell: (props: any) => <EditableCell editable={false} {...props} />,
       },
       {
-        Header: "Delete",
+        Header: "",
         id: "delete",
-        Cell: ({ row }) => <button>Delete</button>,
+        Cell: ({ row }) => (
+          <button onClick={() => deleteRecord(row.original._id ?? "")}>
+            Delete
+          </button>
+        ),
       },
     ],
     []

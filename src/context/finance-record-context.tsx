@@ -13,8 +13,8 @@ export interface FinanceRecord {
 interface FinanceContext {
   records: FinanceRecord[];
   addRecord: (record: FinanceRecord) => void;
-  updateRecord: () => void;
-  //   deleteRecord: (id: string) => void;
+  updateRecord: (id: string, record: FinanceRecord) => void;
+  deleteRecord: (id: string) => void;
 }
 
 export const FinanceRecordContext = createContext<FinanceContext | undefined>(
@@ -30,6 +30,9 @@ export const FinanceRecordProvider = ({
   const { user } = useUser();
 
   const fetchRecordsByUserId = async () => {
+    if (!user) {
+      return;
+    }
     try {
       const res = await fetch(
         `http://localhost:3001/finance-records/getAllByUserID/${user?.id}`,
@@ -66,16 +69,55 @@ export const FinanceRecordProvider = ({
     }
   };
 
-  const updateRecord = () => {
-    console.log("update record is called");
+  const deleteRecord = async (id: string) => {
+    try {
+      const res = await fetch(`http://localhost:3001/finance-records/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (data) {
+        setRecords((prev) => prev.filter((record) => record._id !== id));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateRecord = async (id: string, record: FinanceRecord) => {
+    try {
+      const res = await fetch(`http://localhost:3001/finance-records/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(record),
+      });
+      const data = await res.json();
+      if (data) {
+        setRecords((prev) =>
+          prev.map((record) => {
+            if (record._id === id) {
+              return data;
+            } else return record;
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     fetchRecordsByUserId();
-  }, []);
+  }, [user]);
 
   return (
-    <FinanceRecordContext.Provider value={{ records, addRecord, updateRecord }}>
+    <FinanceRecordContext.Provider
+      value={{ records, addRecord, updateRecord, deleteRecord }}
+    >
       {children}
     </FinanceRecordContext.Provider>
   );

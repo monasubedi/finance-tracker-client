@@ -56,10 +56,8 @@ button:hover {
 }
 .table{
   border-collapse: collapse;
-  width: 100%;
-  
-  
-  
+  width: 100%; 
+  margin-bottom: 30px;
 }
 .table th,td{
   border: 1px solid #ddd;
@@ -67,7 +65,7 @@ button:hover {
   text-align: left;
 }
 .table th{
-  background-color:cornflowerblue;
+  background-color:cadetblue;
   color: white;
   font-size: 18px;
 }
